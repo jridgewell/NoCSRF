@@ -21,7 +21,7 @@ class NoCSRF
      * @param Mixed $origin The object/associative array to retreive the token data from (usually $_POST).
      * @param Boolean $throwException (Facultative) TRUE to throw exception on check fail, FALSE or default to return false.
      * @param Integer $timespan (Facultative) Makes the token expire after $timespan seconds. (null = never)
-	 * @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
+     * @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
      * 
      * @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
      */
@@ -32,7 +32,7 @@ class NoCSRF
                 throw new Exception( 'Missing CSRF session token.' );
             else
                 return false;
-            
+
         if ( !isset( $origin[ $key ] ) )
             if($throwException)
                 throw new Exception( 'Missing CSRF form token.' );
@@ -41,10 +41,10 @@ class NoCSRF
 
         // Get valid token from session
         $hash = $_SESSION[ 'csrf_' . $key ];
-		
+
         // Free up session token for one-time CSRF token usage.
-		if(!$multiple)
-			$_SESSION[ 'csrf_' . $key ] = null;
+        if(!$multiple)
+            $_SESSION[ 'csrf_' . $key ] = null;
 
         // Origin checks
         if( self::$doOriginCheck && sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) )
@@ -54,7 +54,7 @@ class NoCSRF
             else
                 return false;
         }
-        
+
         // Check if session token matches form token
         if ( $origin[ $key ] != $hash )
             if($throwException)
